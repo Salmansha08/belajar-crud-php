@@ -1,0 +1,29 @@
+/* styles.css */
+
+body {
+    background-color: #d2ecff;
+    font-family: 'Poppins', sans-serif;
+}
+
+nav {
+    background-color: #90d1ff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+}
+
+.card {
+    outline-color: black;
+    outline-style: solid;
+}
+
+.card-header {
+    background-color: #90d1ff;
+    outline-color: black;
+    outline-style: solid;
+}
+
+.form-control {
+    outline-color: black;
+    outline-style: solid;
+    outline-width: 1px;
+}
