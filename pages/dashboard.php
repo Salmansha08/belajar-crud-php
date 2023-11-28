@@ -14,7 +14,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Siswa</title>
     <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
 </head>
 
@@ -42,8 +42,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
         </div>
     </nav>
-    <h1 class="text-center mt-3"><b>Data Mahasiswa</b></h1>
-    <div class="container mt-3">
+    <h1 class="text-center m-3"><b>Data Produk</b></h1>
+    <div class="container-fluid mt-3">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <a href="insert-data.php" type="button" class="btn btn-primary">Tambah Data</a>
@@ -52,26 +52,30 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <thead class="text-center">
                             <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">NIM</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Kelas</th>
-                                <th scope="col">Aksi</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nama Produk</th>
+                                <th scope="col">Keterangan</th>
+                                <th scope="col">Harga (Rp)</th>
+                                <th scope="col">Jumlah</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             include '../connection.php';
                             $no = 1;
-                            $query = "SELECT * FROM tb_siswa";
+                            $query = "SELECT * FROM produk";
                             $result = mysqli_query($conn, $query);
 
                             foreach ($result as $data) {
                                 echo "
                                     <tr>
                                         <th scope='row' class='text-center'>" . $no++ . "</th>
-                                        <td>" . $data['nis'] . "</td>
-                                        <td>" . $data['nama'] . "</td>
-                                        <td class='text-center'>" . $data['kelas'] . "</td>
+                                        <td>" . $data['id'] . "</td>
+                                        <td>" . $data['nama_produk'] . "</td>
+                                        <td>" . $data['keterangan'] . "</td>
+                                        <td>" . $data['harga'] . "</td>
+                                        <td>" . $data['jumlah'] . "</td>
                                         <td class='text-center'>
                                             <a href='update-data.php?id=" . $data['id'] . "' class='btn btn-warning mt-1 mb-1'>Edit</a>
                                             <a href='../delete-data.php?id=" . $data['id'] . "' class='btn btn-danger mt-1 mb-1'>Hapus</a>
@@ -87,8 +91,12 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         </div>
     </div>
     <footer class="mt-3 mb-3 text-center">
-        <p>&copy; <span id="currentYear"></span> Salman Abdul Jabbaar Wiharja.</p>
+        <p>&copy; <span id="currentYear"></span>Salman Abdul Jabbaar Wiharja.</p>
     </footer>
+    <script>
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>
 

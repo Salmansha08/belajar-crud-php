@@ -10,18 +10,19 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 if (isset($_POST["submit"])) {
     $id = $_POST["id"];
-    $nim = $_POST["nim"];
-    $nama = $_POST["nama"];
-    $kelas = $_POST["kelas"];
+    $nama_produk = $_POST["nama_produk"];
+    $keterangan = $_POST["keterangan"];
+    $harga = $_POST["harga"];
+    $jumlah = $_POST["jumlah"];
 
-    $conn = new mysqli("localhost", "root", "", "db_crud");
+    $conn = new mysqli("localhost", "root", "", "pijarcamp");
 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("UPDATE tb_siswa SET nis = ?, nama = ?, kelas = ? WHERE id = ?");
-    $stmt->bind_param("sssi", $nim, $nama, $kelas, $id);
+    $stmt = $conn->prepare("UPDATE produk SET nama_produk=?, keterangan=?, harga=?, jumlah=? WHERE id=?");
+    $stmt->bind_param("ssssi", $nama_produk, $keterangan, $harga, $jumlah, $id);
 
     if ($stmt->execute()) {
         header("Location: dashboard.php");
@@ -36,7 +37,7 @@ if (isset($_POST["submit"])) {
 
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
-    $selectQuery = "SELECT * FROM tb_siswa WHERE id = $id";
+    $selectQuery = "SELECT * FROM produk WHERE id = $id";
     $result = mysqli_query($conn, $selectQuery);
     $data = mysqli_fetch_assoc($result);
 } else {
@@ -50,18 +51,17 @@ if (isset($_GET["id"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Data Mahasiswa</title>
+    <title>Edit Data Produk</title>
     <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="../images/bmi-square.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
-                ADMIN
+            <a class="navbar-brand" href="dashboard.php">
+                <img src="../images/Pijar-Camp.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -81,29 +81,44 @@ if (isset($_GET["id"])) {
             </div>
         </div>
     </nav>
-    <h1 class="text-center mt-3"><b>Edit Data Mahasiswa</b></h1>
+    <h1 class="text-center mt-3"><b>Edit Data Produk</b></h1>
     <div class="container mt-3">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <form action="update-data.php" method="POST">
                     <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
                     <div class="mb-3">
-                        <label for="nim" class="form-label">NIM</label>
-                        <input type="text" class="form-control" id="nim" name="nim" value="<?php echo $data['nis']; ?>" required>
+                        <label for="id" class="form-label">id</label>
+                        <input type="text" class="form-control" id="id" name="id" value="<?php echo $data['id']; ?>" readonly>
                     </div>
                     <div class="mb-3">
-                        <label for="nama" class="form-label">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $data['nama']; ?>" required>
+                        <label for="nama_produk" class="form-label">Nama Produk</label>
+                        <input type="text" class="form-control" id="nama_produk" name="nama_produk" value="<?php echo $data['nama_produk']; ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label for="kelas" class="form-label">Kelas</label>
-                        <input type="text" class="form-control" id="kelas" name="kelas" value="<?php echo $data['kelas']; ?>" required>
+                        <label for="keterangan" class="form-label">Keterangan</label>
+                        <input type="text" class="form-control" id="keterangan" name="keterangan" value="<?php echo $data['keterangan']; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="harga" class="form-label">Harga (Rp)</label>
+                        <input type="text" class="form-control" id="harga" name="harga" value="<?php echo $data['harga']; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="jumlah" class="form-label">Jumlah</label>
+                        <input type="text" class="form-control" id="jumlah" name="jumlah" value="<?php echo $data['jumlah']; ?>" required>
                     </div>
                     <input type="submit" class="btn btn-primary" name="submit" value="Update" onclick="return confirm('Apakah Anda yakin ingin mengubah data ini?')">
                 </form>
             </div>
         </div>
     </div>
+    <footer class="mt-3 mb-3 text-center">
+        <p>&copy; <span id="currentYear"></span>Salman Abdul Jabbaar Wiharja.</p>
+    </footer>
+    <script>
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 
 </html>
